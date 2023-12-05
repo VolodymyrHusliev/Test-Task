@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: 2b464948146cc4c8bb3df5fa3906a805
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Goldman Sans App
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: d3880f45a2d73475aa1c71e14a7cf9fc, type: 3}
+  - {fileID: 12800000, guid: ca97a31883cc345d6a33d499ae4f2665, type: 3}
+  - {fileID: 12800000, guid: 388162b75ca264719b355b19a627c70b, type: 3}
+  - {fileID: 12800000, guid: 5919c7e3f1af54d58b8790a37683a1c4, type: 3}
+  - {fileID: 12800000, guid: 4701af427c2e6471b904f004a0c85fac, type: 3}
+  - {fileID: 12800000, guid: 0a228396bbaa14a9687a250464b37427, type: 3}
+  - {fileID: 12800000, guid: c2da7a6e0a31a408b85e39ae81dc9638, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
