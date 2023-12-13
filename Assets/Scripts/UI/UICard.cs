@@ -1,12 +1,14 @@
-﻿using TMPro;
+﻿using CardGame.Networking.Models;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace CardGame.Core.UI
 {
     public class UICard : MonoBehaviour
     {
-        internal CardModel dataModel;
+        private int index;
+        public int Index => index;
         
         [Header("HEAD")]
         [SerializeField] private RawImage artImage;
@@ -17,10 +19,10 @@ namespace UI
         [SerializeField] private TextMeshProUGUI manaText;
         [SerializeField] private TextMeshProUGUI hpText;
 
-        internal void Setup(CardModel dataModel)
+        public void Setup(CardModel dataModel)
         {
-            this.dataModel = dataModel;
-
+            index = dataModel.index;
+            
             artImage.texture = dataModel.icon;
             titleText.text = $"{dataModel.hp }{dataModel.mana }{dataModel.attack }";
             descriptionText.text = $"HP: {dataModel.hp} \n" +

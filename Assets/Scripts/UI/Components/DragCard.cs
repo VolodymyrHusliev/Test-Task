@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UI
+namespace CardGame.Core.UI
 {
     public class DragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
     {
@@ -20,32 +20,32 @@ namespace UI
             rectTransform = GetComponent<RectTransform>();
         }
 
-        public void OnBeginDrag(PointerEventData eventData)
+        void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
         {
             startPos = rectTransform.anchoredPosition;
             cg.blocksRaycasts = false;
         }
 
-        public void OnDrag(PointerEventData eventData)
+        void IDragHandler.OnDrag(PointerEventData eventData)
         {
             glowGreen.SetActive(true);
             var newPosition = (Vector2)Camera.main.ScreenToWorldPoint(eventData.position);
             image.rectTransform.position = newPosition;
         }
 
-        public void OnEndDrag(PointerEventData eventData)
+        void IEndDragHandler.OnEndDrag(PointerEventData eventData)
         {
             cg.blocksRaycasts = true;
             glowGreen.SetActive(false);
             rectTransform.DOAnchorPos(startPos, 0.5f);
         }
 
-        public void OnPointerEnter(PointerEventData data)
+        void IPointerEnterHandler.OnPointerEnter(PointerEventData data)
         {
             glowWhite.SetActive(true);
         }
         
-        public void OnPointerExit(PointerEventData data)
+        void IPointerExitHandler.OnPointerExit(PointerEventData data)
         {
             glowWhite.SetActive(false);
         }

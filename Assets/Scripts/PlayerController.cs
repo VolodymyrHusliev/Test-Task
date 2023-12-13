@@ -1,26 +1,39 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CardGame.Core.UI;
+using CardGame.Core.Utils;
+using CardGame.Networking.Models;
 using UnityEngine;
 using UnityEngine.Networking;
+
 using Random = UnityEngine.Random;
 
-namespace Card
+namespace CardGame.Core
 {
     public class PlayerController : MonoBehaviour
     {
-        private DeckController deckController;
-        private int cardsCount;
+        [SerializeField] private DeckController deckController;
+        [SerializeField] private RandomCardValue randomCardValueUI;
         
+        private List<CardModel> cardsData = new();
+        
+        private void Awake()
+        {
+#if UNITY_EDITOR
+            randomCardValueUI.Setup(RandomCardValue);
+#endif    
+        }
+
         private IEnumerator Start()
         {
-            cardsCount = Random.Range(4, 7);
-            var cardsData = new List<CardModel>();
+            var cardsCount = Random.Range(4, 7);
             var index = 0;
             
             while(index < cardsCount)
             {
                 var item = new CardModel();
+                item.index = index;
                 item.attack = Random.Range(2, 10);
                 item.hp = Random.Range(2, 10);
                 item.mana = Random.Range(2, 10);
@@ -55,6 +68,59 @@ namespace Card
 
             yield return webRequest.SendWebRequest();
         }
+
+#if UNITY_EDITOR
+        
+        private int cardIndex = 0;
+        
+        private void RandomCardValue()
+        {
+            var cards = cardsData;
+            
+            if(cardsData.Count == 0)
+                return;
+
+            if (cardIndex >= cards.Count)
+            {
+                cardIndex = 0;
+            }
+            
+            var rValue = Random.Range(0, 3);
+            var card = cards[cardIndex];
+            
+            switch (rValue)
+            {
+                case 0:
+                    card.hp = Random.Range(0, 10);
+                    break;
+                case 1:
+                    card.mana = Random.Range(0, 10);
+                    break;
+                case 2:
+                    card.attack = Random.Range(0, 10);
+                    break;
+            }
+
+            if (card.hp > 0)
+            {
+                deckController.UpdateCard(card);
+            }
+            else
+            {
+                cardsData.RemoveAt(cardIndex);
+                deckController.DestroyCard(card);
+            }
+            
+            cardIndex++;
+            
+            if (cardIndex >= cardsData.Count)
+            {
+                cardIndex = 0;
+            }
+        }
+        
+#endif
+        
     }
 }
 

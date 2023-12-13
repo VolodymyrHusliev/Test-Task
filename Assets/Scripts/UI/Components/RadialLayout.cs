@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace CardGame.Core.UI
 {
     public class RadialLayout : LayoutGroup
     {
         [SerializeField] private float fDistance; 
-        [Range(0f,360f)] private float MinAngle, MaxAngle, StartAngle;
+        [SerializeField] [Range(0f,360f)] private float MinAngle, MaxAngle, StartAngle;
         protected override void OnEnable() { base.OnEnable(); CalculateRadial(); }
         public override void SetLayoutHorizontal() { }
         public override void SetLayoutVertical() { }

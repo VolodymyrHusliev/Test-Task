@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
+using CardGame.Networking.Models;
 using UnityEngine;
-using UI;
 
-namespace Card
+
+namespace CardGame.Core.UI
 {
     public class DeckController : MonoBehaviour
     {
@@ -12,9 +12,9 @@ namespace Card
         [SerializeField] private List<UICard> instancedCards;
         [SerializeField] private List<UICard> cardsOnPlayArea;
 
-        internal void SetupDeck(List<CardModel> cards)
+        public void SetupDeck(List<CardModel> cards)
         {
-            if(instancedCards != null)
+            if (instancedCards != null)
                 instancedCards.ForEach(x => Destroy(x.gameObject));
             instancedCards = new List<UICard>();
 
@@ -25,20 +25,50 @@ namespace Card
                 instancedCards.Add(item);
             }
         }
-        internal List<UICard> GetDeckCards()
+
+        public void UpdateCard(CardModel card)
         {
-            return instancedCards.Except(cardsOnPlayArea).ToList();
+            var item = FindCard(card);
+
+            if (item == null)
+            {
+                Debug.LogError("Unable to find Card");
+                return;
+            }
+
+            item.Setup(card);
         }
 
-        internal void DestroyCard(UICard card)
+        public void DestroyCard(CardModel card)
         {
-            instancedCards.Remove(card);
-            Destroy(card.gameObject);
+            var item = FindCard(card);
+
+            if (item == null)
+            {
+                Debug.LogError("Unable to find Card");
+                return;
+            }
+            
+            instancedCards.Remove(item);
+            Destroy(item.gameObject);
         }
+
         public void DropCardOnPlayArea(UICard card)
         {
             cardsOnPlayArea.Clear();
             cardsOnPlayArea.Add(card);
+        }
+
+        private UICard FindCard(CardModel card)
+        {
+            var itemIndex = instancedCards.FindIndex(x => x.Index == card.index);
+            if (itemIndex == -1)
+            {
+                Debug.LogError("Unable to find Card");
+                return null;
+            }
+
+            return instancedCards[itemIndex];
         }
     }
 }
