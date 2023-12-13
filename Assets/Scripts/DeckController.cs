@@ -1,43 +1,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UI;
 
-public class DeckController : MonoBehaviour
+namespace Card
 {
-    [FormerlySerializedAs("cardPrefab")] [SerializeField] private UICard uiCardPrefab;
-    [SerializeField] private RectTransform root;
-    [SerializeField] private List<UICard> instancedCards;
-    [SerializeField] private List<UICard> cardsOnPlayArea;
-
-    public void SetupDeck(List<CardModel> cards)
+    public class DeckController : MonoBehaviour
     {
-        if(instancedCards != null)
-            instancedCards.ForEach(x => Destroy(x.gameObject));
-        instancedCards = new List<UICard>();
+        [SerializeField] private UICard uiCardPrefab;
+        [SerializeField] private RectTransform root;
+        [SerializeField] private List<UICard> instancedCards;
+        [SerializeField] private List<UICard> cardsOnPlayArea;
 
-        for (var i = 0; i < cards.Count; i++)
+        internal void SetupDeck(List<CardModel> cards)
         {
-            var item = Instantiate(uiCardPrefab, root);
-            item.Setup(cards[i]);
-            instancedCards.Add(item);
+            if(instancedCards != null)
+                instancedCards.ForEach(x => Destroy(x.gameObject));
+            instancedCards = new List<UICard>();
+
+            for (var i = 0; i < cards.Count; i++)
+            {
+                var item = Instantiate(uiCardPrefab, root);
+                item.Setup(cards[i]);
+                instancedCards.Add(item);
+            }
         }
-    }
+        internal List<UICard> GetDeckCards()
+        {
+            return instancedCards.Except(cardsOnPlayArea).ToList();
+        }
 
-    public void DropCardOnPlayArea(UICard card)
-    {
-        cardsOnPlayArea.Clear();
-        cardsOnPlayArea.Add(card);
-    }
-
-    public List<UICard> GetDeckCards()
-    {
-        return instancedCards.Except(cardsOnPlayArea).ToList();
-    }
-
-    public void DestroyCard(UICard card)
-    {
-        instancedCards.Remove(card);
-        Destroy(card.gameObject);
+        internal void DestroyCard(UICard card)
+        {
+            instancedCards.Remove(card);
+            Destroy(card.gameObject);
+        }
+        public void DropCardOnPlayArea(UICard card)
+        {
+            cardsOnPlayArea.Clear();
+            cardsOnPlayArea.Add(card);
+        }
     }
 }

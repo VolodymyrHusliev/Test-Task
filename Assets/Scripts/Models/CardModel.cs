@@ -8,3 +8,4 @@ public class CardModel
 
     public Texture2D icon;
 }
+
